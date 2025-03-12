@@ -5,6 +5,7 @@
     let dragOver = false;
     let isLoading = writable(false);
     let generatedImageUrl = writable<string | null>(null);
+    let transcript = writable('');
 
     function handleFiles(event: Event) {
         const fileList = (event.target as HTMLInputElement).files;
@@ -52,6 +53,7 @@
         const filesArray = $validFiles;
         const formData = new FormData();
         filesArray.forEach(file => formData.append('images', file));
+		formData.append('transcript',$transcript)
 
         try {
             const response = await fetch('/api/generate', {
@@ -64,11 +66,23 @@
             generatedImageUrl.set(url);
             alert('Images generated successfully!');
             // Log the result
-            console.log('Generated image URL:', url);
+            // console.log('Generated image URL:', url);
         } catch (error) {
             console.error('Error generating images:', error);
         } finally {
             isLoading.set(false);
+        }
+    }
+
+    function downloadImage() {
+        const url = $generatedImageUrl;
+        if (url) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'generated-image.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
     }
 </script>
@@ -79,6 +93,10 @@
 </svelte:head>
 
 <section class="container mx-auto max-w-lg p-4">
+    <div class="mb-4">
+        <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Your Story:</label>
+        <textarea id="description" rows="4" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" bind:value={$transcript}></textarea>
+    </div>
     {#if $validFiles.length < 3}
     <div
         class="dropzone relative border-2 border-dashed border-gray-300 rounded-lg p-8 text-center transition-colors duration-300 ease-in-out"
@@ -131,6 +149,9 @@
     {#if $generatedImageUrl}
         <div class="generated-image text-center mt-4">
             <img src={$generatedImageUrl} alt="Generated" class="max-w-full rounded" />
+            <button class="download-btn block mx-auto mt-4 px-4 py-2 bg-green-500 text-white rounded" on:click={downloadImage}>
+                Download Image
+            </button>
         </div>
     {/if}
 </section>
