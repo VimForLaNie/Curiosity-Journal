@@ -1,38 +1,37 @@
-# sv
+# Curiosity Journal
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## Running the Program
 
-## Creating a project
+To run the program and reproduce results similar to those shown in the video demo, follow these steps:
 
-If you're seeing this, you've probably already done this step. Congrats!
+1. Clone the repository:
+    ```bash
+    git clone <repository-url>
+    cd <repository-directory>
+    ```
 
-```bash
-# create a new project in the current directory
-npx sv create
+2. Install dependencies:
+    ```bash
+    npm install
+    ```
 
-# create a new project in my-app
-npx sv create my-app
-```
+3. Start the development server:
+    ```bash
+    npm run dev
+    ```
 
-## Developing
+4. Open your browser and navigate to `http://localhost:8888` to see the application in action.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## AI API Calls
 
-```bash
-npm run dev
+The location in the code where AI API calls are made can be found in the following files:
+- `src/api/generate/+server.ts`
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## Dependencies
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+This project relies on the following dependencies:
+- `svelte` (for UI)
+- `axios` (for downloading images from OpenAI API image generation)
+- `dotenv` (for managing environment variables)
+- `openai` (for AI functionalities)
+- `canvas` (for basic image processing in Node.js)
